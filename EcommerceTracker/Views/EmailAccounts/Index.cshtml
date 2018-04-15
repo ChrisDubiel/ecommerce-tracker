@@ -1,0 +1,99 @@
+﻿@model IEnumerable<EcommerceTracker.Domain.Models.TrackedEmailAccount>
+
+@{
+    ViewBag.Title = "Tracked Email Addresses";
+}
+
+<div id="messages">
+    @if (ViewBag.StatusMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Success!</strong> @ViewBag.StatusMessage
+        </div>
+    }
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            <strong>Uh oh!</strong> @ViewBag.ErrorMessage
+        </div>
+    }
+    <p class="text-warning"></p>
+</div>
+
+<h3>Tracked Email Addresses</h3>
+<br />
+<p>
+    @Html.ActionLink("+ Add Gmail Account", "AuthorizeGoogle")
+</p>
+@if (Model.Any())
+{
+    <table class="table">
+        <thead class="thead-default">
+        <tr>
+            <th>
+                Email Address
+            </th>
+            <th>
+                Email Account Type
+            </th>
+            <th>
+                Last Scanned?
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            var lastScanned = item.LastScanned?.ToString("ddd MMM yyyy hh:mm tt");
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailAccountType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => lastScanned)
+                </td>
+                <td>
+                    <a id="@string.Concat("email-address-", item.EmailAddress)"  class="scan-email" href="#">Scan Now</a> | @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            $('a.scan-email').on('click',
+                function() {
+                    var emailAddress = this.id.replace('email-address-', '');
+                    $.ajax({
+                        url: "EmailAccounts/Scan",
+                        type: "POST",
+                        data: { emailAddress: emailAddress },
+                        cache: false,
+                        async: true,
+                        success: function(data) {
+                            console.log(data);
+                            $('#messages').append('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                '\r\n  <button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '\r\n    <span aria-hidden="true">&times;</span>' +
+                                '\r\n  </button>' +
+                                '\r\n  <strong>Success!</strong> Scanning started.' +
+                                '\r\n</div>'
+                            );
+                        }
+                    });
+                });
+        })
+    </script>
+}

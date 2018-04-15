@@ -1,0 +1,49 @@
+﻿@model EcommerceTracker.ViewModels.AlertViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Alert</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AlertType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlertType)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryOrNecessityNames)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryOrNecessityNames)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThresholdAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThresholdAmount)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color pb-3">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    }
+    <div class="pb-3">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>

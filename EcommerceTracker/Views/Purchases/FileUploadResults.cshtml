@@ -1,0 +1,49 @@
+﻿@model EcommerceTracker.ViewModels.FileUploadResultsViewModel
+
+@{
+    ViewBag.Title = "File Upload Results";
+}
+
+<h2>File Upload</h2>
+
+<div>
+    <h4>Results</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExistingPurchases)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExistingPurchases)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewCategories)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewCategories)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewSites)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewSites)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewPurchases)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewPurchases)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

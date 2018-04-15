@@ -1,0 +1,110 @@
+﻿@using EcommerceTracker.Extensions
+@model EcommerceTracker.ViewModels.EditAlertViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal pb-3">
+        <h4>Alert</h4>
+        <hr />
+
+        <div class="row">
+            <div class="form-group col-4">
+                @Html.LabelFor(model => model.AlertType)
+                @Html.DropDownListFor(model => model.AlertType, Model.AlertTypes, new { id= "alert-type-dropdown", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AlertType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div id="alert-categories" class="row">
+            <div  class="form-group col-4">
+                @Html.LabelFor(model => model.CategoryCheckModels)
+                <div class="form-check form-check-inline">
+                    @for (var i = 0; i < Model.CategoryCheckModels.Count; i++)
+                    {
+                        <label class="form-check-label">
+                            @Html.HiddenFor(model => model.CategoryCheckModels[i].Id)
+                            @Html.EditorFor(model => model.CategoryCheckModels[i].Checked, new {htmlAttributes = new {@class = "form-check-input"}})
+                            @Html.DisplayFor(model => model.CategoryCheckModels[i].Name)
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div id="alert-necessities" class="row">
+            <div class="form-group col-4">
+                @Html.LabelFor(model => model.NecessityValueCheckModels)
+                <div class="form-check form-check-inline">
+                    @for (var i = 0; i < Model.NecessityValueCheckModels.Count; i++)
+                    {
+                        <label class="form-check-label">
+                            @Html.HiddenFor(model => model.NecessityValueCheckModels[i].Id)
+                            @Html.EditorFor(model => model.NecessityValueCheckModels[i].Checked, new {htmlAttributes = new {@class = "form-check-input"}})
+                            @Html.DisplayFor(model => model.NecessityValueCheckModels[i].Name)
+                        </label>
+                    }
+                </div>
+            </div>  
+        </div>
+
+        <div class="row">
+            <div class="form-group col-4">
+                @Html.LabelFor(model => model.Amount)
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+    function toggleAlertTypeForm(alertType) {
+        var alertLower = alertType.toLocaleLowerCase();
+        if (alertLower === 'category') {
+            $('#alert-categories').show();
+            $('#alert-necessities').hide();
+        }
+        if (alertLower === 'necessity') {
+            $('#alert-categories').hide();
+            $('#alert-necessities').show();
+        }
+    }
+
+    $(document).ready(function() {
+        toggleAlertTypeForm(@Html.Raw(Json.Encode(Model.AlertType.ToDescription())));
+
+        $("#alert-type-dropdown").change(function () {
+            var value = $(this).val();
+            console.log(value);
+            toggleAlertTypeForm(value);
+        });
+    });
+</script>
+
+@section Styles {
+    <style>
+       select {
+            max-width: 280px;
+        }
+       #alert-categories, #alert-necessities {
+           display: none;
+       }
+    </style>
+}

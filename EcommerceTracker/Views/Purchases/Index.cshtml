@@ -1,0 +1,99 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<EcommerceTracker.ViewModels.PurchaseViewModel>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Purchases";
+}
+
+<h2 class="pb-3">Purchases</h2>
+
+<div class="pb-3">
+    @Html.ActionLink("Import from Amazon", "ImportAmazonPurchases", null, new { @class = "btn btn-secondary" })
+</div>
+@if (Model.Any())
+{
+    <div class="row pb-3">
+        <div class="col-md-3">
+            @using (Html.BeginForm("Index", "Purchases", FormMethod.Post, new {@class = "input-group"}))
+            {
+                @Html.TextBox("searchBy", ViewBag.CurrentFilter as string, new {@class = "form-control"})
+                <span class="input-group-btn">
+                    <input class="btn btn-secondary" type="submit" value="Search">
+                </span>
+            }
+        </div>
+    </div>
+    <table class="table table-sm table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.CategorySortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Necessary?", "Index", new { sortOrder = ViewBag.NecessitySortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Site", "Index", new { sortOrder = ViewBag.SiteSortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.QuantitySortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Order Date", "Index", new { sortOrder = ViewBag.DateSortParam, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName) 
+                    @if (item.ParentCategoryName != null)
+                    {
+                        <span>(@item.ParentCategoryName)</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NecessityDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {id = item.Id})
+                </td>
+            </tr>
+        }
+    </table>
+    if (Model.PageCount > 1)
+    {
+        <div class="text-center">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new {pageNumber = page, currentFilter = ViewBag.CurrentFilter}))
+        </div>
+    }
+}
+else
+{
+    <p class="h3">Not tracking any purchases yet!</p>
+}

@@ -1,0 +1,64 @@
+﻿@model EcommerceTracker.ViewModels.EditCategoryViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal pb-3">
+        <h4>Category</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentCategoryId)
+            @Html.DropDownListFor(model => model.ParentCategoryId, Model.ParentCategories, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                @Html.EditorFor(model => model.UseParentCategoryNecessityValue, new { htmlAttributes = new { @class = "form-check-input" } })
+                @Html.DisplayNameFor(model => model.UseParentCategoryNecessityValue)
+            </label>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NecessityValue)
+            @Html.DropDownListFor(model => model.NecessityValue, Model.NecessityValues, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NecessityValue, "", new { @class = "text-danger" })
+        </div>
+
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+}
+
+<div class="pb-3">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Styles {
+    <style>
+        /* Set width on the form input elements since they're 100% wide by default */
+        input,
+        textarea {
+            max-width: 560px;
+        }
+
+        select {
+            max-width: 280px;
+        }
+    </style>
+}

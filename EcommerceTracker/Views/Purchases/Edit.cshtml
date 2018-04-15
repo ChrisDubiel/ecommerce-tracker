@@ -1,0 +1,99 @@
+﻿@model EcommerceTracker.ViewModels.EditPurchaseViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal pb-3">
+        <h4>Purchase</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control long-input" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId)
+            @Html.DropDownListFor(model => model.CategoryId, Model.Categories, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.SiteId)
+            @Html.DropDownListFor(model => model.SiteId, Model.Sites, new { @class = "form-control", @disabled = "disabled"})
+            @Html.ValidationMessageFor(model => model.SiteId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderReferenceNumber)
+            @Html.EditorFor(model => model.OrderReferenceNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.OrderReferenceNumber, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderDate)
+            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity)
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnitPrice)
+            @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-check">
+            <label class="form-check-label">
+                @Html.EditorFor(model => model.UseCategoryNecessityValue, new { htmlAttributes = new { @class = "form-check-input" } })
+                @Html.DisplayNameFor(model => model.UseCategoryNecessityValue)
+            </label>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.NecessityValue)
+            @Html.DropDownListFor(model => model.NecessityValue, Model.NecessityValues, new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.NecessityValue, "", new { @class = "text-danger" })
+        </div>
+
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+}
+
+<div class="pb-3">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Styles {
+    <style>
+        /* Set width on the form input elements since they're 100% wide by default */
+        input,
+        textarea
+        {
+            max-width: 280px;
+        }
+
+        select {
+            max-width: 280px;
+        }
+
+        input.long-input {
+            max-width: 560px;
+        }
+    </style>
+}

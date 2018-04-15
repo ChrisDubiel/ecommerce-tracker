@@ -1,0 +1,73 @@
+﻿@model IEnumerable<EcommerceTracker.ViewModels.AlertViewModel>
+
+@{
+    ViewBag.Title = "Alerts";
+}
+
+<h2  class="pb-3">Alerts</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-secondary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AlertType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryOrNecessityNames)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThresholdAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Progress)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AlertType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CategoryOrNecessityNames)
+        </td>
+        <td>
+            $@Html.DisplayFor(modelItem => item.CurrentAmount)
+        </td>
+        <td>
+            $@Html.DisplayFor(modelItem => item.ThresholdAmount)
+        </td>
+        <td>
+            <div class="progress">
+                @if (item.Progress <= 50)
+                {
+                    <div class="progress-bar" role="progressbar" style="width: @item.Progress%;"></div>
+                }
+                else if (item.Progress > 50 && item.Progress <= 75)
+                {
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Progress%;"></div>
+                }
+                else if (item.Progress > 75 && item.Progress < 100)
+                {
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: @item.Progress%;"></div>
+                }
+                else if (item.Progress >= 100)
+                {
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @item.Progress%;"></div>
+                }
+            </div>
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
