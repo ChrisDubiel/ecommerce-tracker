@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Entity;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -210,8 +211,9 @@
                         Thread.Sleep(TimeSpan.FromSeconds(3));
                     } while (!reportProcessed && !reportFailed);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.Write(e.Message);
                     TempData["HTML"] = driver.PageSource;
                     return RedirectToAction("SeleniumError");
                 }
